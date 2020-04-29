@@ -1,2 +1,4 @@
 rootProject.name='VideoFilter'
 include ':app', ':libFrameProcessor-debug'
+
+project(':libFrameProcessor-debug').projectDir = new File('../Libraries/FrameProcessor/libFrameProcessor/')
