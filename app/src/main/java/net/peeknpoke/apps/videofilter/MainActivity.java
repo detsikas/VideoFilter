@@ -62,6 +62,7 @@ public class MainActivity extends AppCompatActivity implements FrameProcessorObs
                 mFrameProcessor.registerObserver(this);
             } catch (IOException e) {
                 e.printStackTrace();
+                finish();
             }
             mFrameProcessor.start();
         });
