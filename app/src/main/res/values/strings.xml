@@ -1,0 +1,9 @@
+<resources>
+    <string name="app_name">VideoFilter</string>
+    <string name="process">process</string>
+    <string name="load">Load</string>
+    <string name="permission_external_storage_rationale">External storage permission needed to process videos</string>
+    <string name="permission_storage_never_ask_again_rationale">External storage permission needed to process videos</string>
+    <string name="ok">ok</string>
+    <string name="Goto_app_settings">Go to app settings to fix permissions</string>
+</resources>
