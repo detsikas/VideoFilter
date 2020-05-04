@@ -44,7 +44,7 @@ public class MainActivity extends AppCompatActivity implements FrameProcessorObs
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        mFrameProcessorThread = new HandlerThread("frame");
+        mFrameProcessorThread = new HandlerThread("FrameProcessorThread");
         mFrameProcessorThread.start();
 
         Looper looper = mFrameProcessorThread.getLooper();
@@ -67,15 +67,14 @@ public class MainActivity extends AppCompatActivity implements FrameProcessorObs
     {
         mProgressBar.bringToFront();
         mProgressBar.setVisibility(View.VISIBLE);
-        mFrameProcessorHandler.post(() -> {
-            try {
-                mFrameProcessor = new FrameProcessor(getApplicationContext(), mVideoUri,
-                        getResources().getString(R.string.app_name));
-            } catch (IOException e) {
-                e.printStackTrace();
-                finish();
-            }
-        });
+        try {
+            mFrameProcessor = new FrameProcessor(getApplicationContext(), mVideoUri,
+                    getResources().getString(R.string.app_name));
+            mFrameProcessor.registerObserver(this);
+        } catch (IOException e) {
+            e.printStackTrace();
+            finish();
+        }
     }
 
     @Override
