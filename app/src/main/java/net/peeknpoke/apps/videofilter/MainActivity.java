@@ -35,20 +35,12 @@ public class MainActivity extends AppCompatActivity implements FrameProcessorObs
     private Button mProcessButton;
     private FrameProcessor mFrameProcessor;
     private Uri mVideoUri;
-    private Handler mFrameProcessorHandler;
-    private HandlerThread mFrameProcessorThread;
     private ProgressBar mProgressBar;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-
-        mFrameProcessorThread = new HandlerThread("FrameProcessorThread");
-        mFrameProcessorThread.start();
-
-        Looper looper = mFrameProcessorThread.getLooper();
-        mFrameProcessorHandler = new Handler(looper);
 
         mStoragePermissionHandler = new StoragePermissionHandler(getResources().getString(R.string.app_name));
         mVideoView = findViewById(R.id.videoView);
@@ -127,11 +119,6 @@ public class MainActivity extends AppCompatActivity implements FrameProcessorObs
     protected void onResume() {
         super.onResume();
         mStoragePermissionHandler.checkAndRequestPermission(MainActivity.this, StoragePermissionHandler.CODE);
-    }
-
-    @Override
-    public void setupComplete() {
-        mFrameProcessorHandler.post(() -> mFrameProcessor.start());
     }
 
     @Override
