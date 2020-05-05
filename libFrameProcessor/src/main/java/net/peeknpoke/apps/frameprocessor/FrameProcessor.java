@@ -282,7 +282,7 @@ public class FrameProcessor implements ObserverSubject<FrameProcessorObserver>, 
             {
                 try {
                     while(!mRenderingContext.frameRendered)
-                        mRenderingContext.syncWithDecoder.wait(500);
+                        mRenderingContext.syncWithDecoder.wait();
                 } catch (InterruptedException e) {
                     e.printStackTrace();
                 }
