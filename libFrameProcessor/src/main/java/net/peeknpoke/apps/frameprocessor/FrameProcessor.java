@@ -38,7 +38,6 @@ public class FrameProcessor implements ObserverSubject<FrameProcessorObserver>, 
     private File mOutputVideoFile;
     private Handler mMainHandler;
     private MediaFormat mMediaFormat;
-    private HandlerThread mEncoderThread;
     private Handler mEncoderHandler;
 
     @RequiresApi(api = Build.VERSION_CODES.Q)
@@ -46,8 +45,8 @@ public class FrameProcessor implements ObserverSubject<FrameProcessorObserver>, 
         mMainHandler = new Handler(context.getMainLooper());
         mMediaExtractor = new MediaExtractor();
 
-        final Handler renderingHandler = createRenderingThread();
-        mEncoderHandler = createEncoderThread();
+        final Handler renderingHandler = createThread("CustomContext");
+        mEncoderHandler = createThread("Encoder");
 
         mMediaExtractor.setDataSource(context, uri, null);
         int videoTrackIndex = getVideoTrackIndex(mMediaExtractor);
@@ -96,19 +95,11 @@ public class FrameProcessor implements ObserverSubject<FrameProcessorObserver>, 
         // Create opengl rendering context
     }
 
-    private Handler createEncoderThread()
+    private Handler createThread(String name)
     {
-        HandlerThread renderingThread = new HandlerThread("Encoder");
-        renderingThread.start();
-        Looper looper = renderingThread.getLooper();
-        return new Handler(looper);
-    }
-
-    private Handler createRenderingThread()
-    {
-        HandlerThread renderingThread = new HandlerThread("CustomContext");
-        renderingThread.start();
-        Looper looper = renderingThread.getLooper();
+        HandlerThread thread = new HandlerThread(name);
+        thread.start();
+        Looper looper = thread.getLooper();
         return new Handler(looper);
     }
 
